@@ -1,0 +1,6 @@
+*.sdf
+Debug
+Release
+InteropCostManaged/obj
+InteropCostManaged/bin
+ipch
