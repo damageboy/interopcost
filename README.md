@@ -19,12 +19,12 @@ Results
 
 The following was obtained on a x64 Intel Core-i7 @ 3.4Ghz
 
-| Method                                           | Time per invocation (ns) |
-|--------------------------------------------------|--------------------------|
-| Native to Native                                 | 1.63                     |
-| Managed to Native [DllImport]                    | 12.95                    |
-| Managed to Native[SuppressUnmanagedCodeSecurity] | 2.72                     |
-| InteropDotNet                                    | 29.25                    |
+| Method                                            | Time per invocation (ns) |
+|---------------------------------------------------|--------------------------|
+| Native to Native                                  | 1.63                     |
+| Managed to Native [DllImport]                     | 12.95                    |
+| Managed to Native [SuppressUnmanagedCodeSecurity] | 2.72                     |
+| InteropDotNet                                     | 29.25                    |
 
 
 Code Generated
@@ -41,10 +41,15 @@ lea         ecx,[rdx-1]
 lea         r9d,[rdx+1]  
 lea         r8d,[rdx+40h]  
 call        qword ptr [__imp_InteropTarget (07FF62B932000h)]  
-sub         rbx,1  
-jne         wmain+30h (07FF62B931030h)  
 ```
+The parameters are loaded very effciently into the `rdx`,`rcx`,`r9`,`r8` registers as the compiler can
+see that the values do not really change from invocation to invocation so it uses up much more efficient instructions (LEA) to calculate `rcx`, `r9`, `r8` from rdx instead of loading them with constants which would run slower and take up more code
 
+Managed to Native [DllImport]
+================
+
+Managed to Native [DllImport] + [SuppressUnmanagedCodeSecurity]
+================
 
 # Bugs #
 
